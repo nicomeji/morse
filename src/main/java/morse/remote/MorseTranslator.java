@@ -1,15 +1,15 @@
 package morse.remote;
 
+import morse.config.CacheConfig;
 import morse.models.SignalMeaning;
-import morse.models.SignalValue;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import reactor.core.publisher.Mono;
 
 @Service
 public class MorseTranslator {
-    public SignalMeaning translate(List<SignalValue> values) {
-
+    @Cacheable(CacheConfig.CODES_MEANING)
+    public Mono<SignalMeaning> translate(String morse) {
         return null;
     }
 }
