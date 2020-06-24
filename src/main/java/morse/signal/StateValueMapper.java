@@ -3,12 +3,12 @@ package morse.signal;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.mapper.UndeterminedStateValueMapper;
-import morse.utils.mapper.StatefulFluxMapper.StatefulMapper;
+import morse.utils.mapper.FluxScanner.Scanner;
 
 import java.util.function.Consumer;
 
-public class StateValueMapper implements StatefulMapper<SignalState, SignalValue> {
-    private StatefulMapper<SignalState, SignalValue> delegate = new UndeterminedStateValueMapper(this);
+public class StateValueMapper implements Scanner<SignalState, SignalValue> {
+    private Scanner<SignalState, SignalValue> delegate = new UndeterminedStateValueMapper(this);
 
     @Override
     public void map(SignalState element, Consumer<SignalValue> next) {
@@ -20,7 +20,7 @@ public class StateValueMapper implements StatefulMapper<SignalState, SignalValue
         delegate.complete(next);
     }
 
-    public void changeDelegate(StatefulMapper<SignalState, SignalValue> delegate) {
+    public void changeDelegate(Scanner<SignalState, SignalValue> delegate) {
         this.delegate = delegate;
     }
 }

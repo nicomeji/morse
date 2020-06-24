@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalState.State;
 import morse.models.SignalValue;
-import morse.utils.mapper.StatefulFluxMapper;
+import morse.utils.mapper.FluxScanner;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
 @AllArgsConstructor
 public class SignalProcessor {
-    public final StatefulFluxMapper<SignalState, SignalValue> mapper;
+    public final FluxScanner<SignalState, SignalValue> mapper;
 
     public Flux<SignalValue> process(Flux<Integer> signal) {
         return mapper.apply(

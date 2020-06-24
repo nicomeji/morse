@@ -3,7 +3,7 @@ package morse.signal.mapper;
 import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
-import morse.utils.mapper.StatefulFluxMapper.StatefulMapper;
+import morse.utils.mapper.FluxScanner.Scanner;
 import morse.utils.tuples.Range;
 import reactor.util.function.Tuple2;
 
@@ -18,7 +18,7 @@ import static java.util.Collections.emptyList;
  * In case complete is called, it won't push any SignalValue (everything was already pushed in "map").
  */
 @AllArgsConstructor
-public class StableStateValueMapper implements StatefulMapper<SignalState, SignalValue> {
+public class StableStateValueMapper implements Scanner<SignalState, SignalValue> {
     private final Map<SignalState.State, List<Tuple2<Range<Integer>, SignalValue>>> ranges;
 
     @Override

@@ -3,7 +3,7 @@ package morse.signal.mapper;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.StateValueMapper;
-import morse.utils.mapper.StatefulFluxMapper.StatefulMapper;
+import morse.utils.mapper.FluxScanner.Scanner;
 import morse.utils.statistics.Mean;
 
 import java.util.*;
@@ -17,7 +17,7 @@ import static java.util.Optional.ofNullable;
  * <p>
  * Here I am using "Jenks Natural Breaks" algorithm.
  */
-public class UnstableStateValueMapper implements StatefulMapper<SignalState, SignalValue> {
+public class UnstableStateValueMapper implements Scanner<SignalState, SignalValue> {
     public static final int MIN_SAMPLE_QTY = 4;
     public static final int MAX_SAMPLES_QTY = 50;
 

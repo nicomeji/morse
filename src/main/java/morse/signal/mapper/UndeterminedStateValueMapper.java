@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.StateValueMapper;
-import morse.utils.mapper.StatefulFluxMapper.StatefulMapper;
+import morse.utils.mapper.FluxScanner.Scanner;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * A second SignalState means that
  */
 @RequiredArgsConstructor
-public class UndeterminedStateValueMapper implements StatefulMapper<SignalState, SignalValue> {
+public class UndeterminedStateValueMapper implements Scanner<SignalState, SignalValue> {
     private final List<SignalState> initialStates = new LinkedList<>();
     private final StateValueMapper context;
 

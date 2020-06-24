@@ -8,9 +8,9 @@ import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class StatefulFluxMapperTest {
-    private final Supplier<StatefulFluxMapper.StatefulMapper<Integer, String>> mapperSupplier = () ->
-            new StatefulFluxMapper.StatefulMapper<>() {
+public class FluxScannerTest {
+    private final Supplier<FluxScanner.Scanner<Integer, String>> mapperSupplier = () ->
+            new FluxScanner.Scanner<>() {
                 private StringBuilder msg = new StringBuilder();
 
                 @Override
@@ -24,7 +24,7 @@ public class StatefulFluxMapperTest {
                 }
             };
 
-    private final StatefulFluxMapper<Integer, String> fluxMapper = new StatefulFluxMapper<>(mapperSupplier);
+    private final FluxScanner<Integer, String> fluxMapper = new FluxScanner<>(mapperSupplier);
 
     @Test
     public void testMapping() {
