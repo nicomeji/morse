@@ -3,8 +3,10 @@ package morse.signal.mapper;
 import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
-import morse.utils.mapper.FluxScanner.Scanner;
-import morse.utils.tuples.Range;
+import morse.signal.StateValueMapper;
+import morse.utils.collections.CircularQueue;
+import morse.utils.mappers.FluxScanner.Scanner;
+import morse.utils.statistics.Range;
 import reactor.util.function.Tuple2;
 
 import java.util.List;
@@ -18,20 +20,31 @@ import static java.util.Collections.emptyList;
  * In case complete is called, it won't push any SignalValue (everything was already pushed in "map").
  */
 @AllArgsConstructor
-public class StableStateValueMapper implements Scanner<SignalState, SignalValue> {
+class StableStateValueMapper implements Scanner<SignalState, SignalValue> {
+    public static final int BUFFER_CAPACITY = 50;
+
+    private final StateValueMapper context;
     private final Map<SignalState.State, List<Tuple2<Range<Integer>, SignalValue>>> ranges;
+    private final CircularQueue<SignalState> buffer = new CircularQueue<>(BUFFER_CAPACITY);
 
     @Override
     public void map(SignalState signalState, Consumer<SignalValue> next) {
-        next.accept(ranges.getOrDefault(signalState.getState(), emptyList())
+        buffer.add(signalState);
+        SignalValue value = ranges.getOrDefault(signalState.getState(), emptyList())
                 .stream()
                 .filter(tuple -> tuple.getT1().contains(signalState.getDuration()))
                 .map(Tuple2::getT2)
                 .findFirst()
-                .orElse(SignalValue.UNDEFINED));
+                .orElse(SignalValue.UNDEFINED);
+        if (!SignalValue.UNDEFINED.equals(value)) {
+            next.accept(value);
+        } else {
+            context.changeDelegate(new UnstableStateValueMapper(context, buffer, null));
+        }
     }
 
     @Override
     public void complete(Consumer<SignalValue> next) {
+        // Do nothing.
     }
 }

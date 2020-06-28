@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.StateValueMapper;
-import morse.utils.mapper.FluxScanner.Scanner;
+import morse.utils.mappers.FluxScanner.Scanner;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class UndeterminedStateValueMapper implements Scanner<SignalState, Signal
     @Override
     public void map(SignalState element, Consumer<SignalValue> next) {
         initialStates.add(element);
-        if (initialStates.size() == UnstableStateValueMapper.MIN_SAMPLE_QTY) {
-            context.changeDelegate(new UnstableStateValueMapper(context, initialStates));
+        if (initialStates.size() == 3) {
+            context.changeDelegate(new UnstableStateValueMapper(context, initialStates, null));
         }
     }
 

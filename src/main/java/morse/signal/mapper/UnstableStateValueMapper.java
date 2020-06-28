@@ -1,15 +1,14 @@
 package morse.signal.mapper;
 
+import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.StateValueMapper;
-import morse.utils.mapper.FluxScanner.Scanner;
-import morse.utils.statistics.Mean;
+import morse.signal.clustering.OneDimensionDiscreteClustering;
+import morse.utils.mappers.FluxScanner.Scanner;
 
-import java.util.*;
+import java.util.Collection;
 import java.util.function.Consumer;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * There are enough samples to determinate some values, but with high error rate.
@@ -17,48 +16,33 @@ import static java.util.Optional.ofNullable;
  * <p>
  * Here I am using "Jenks Natural Breaks" algorithm.
  */
-public class UnstableStateValueMapper implements Scanner<SignalState, SignalValue> {
-    public static final int MIN_SAMPLE_QTY = 4;
-    public static final int MAX_SAMPLES_QTY = 50;
+@AllArgsConstructor
+class UnstableStateValueMapper implements Scanner<SignalState, SignalValue> {
+    public static final int MAX_SAMPLES_QTY = 20;
 
-    private final List<SignalState> buffer;
     private final StateValueMapper context;
-    private final Map<SignalState.State, Mean> means;
-
-    UnstableStateValueMapper(
-            StateValueMapper context,
-            Collection<SignalState> states) {
-        if (states.size() < MIN_SAMPLE_QTY) {
-            throw new IllegalArgumentException();
-        }
-        this.context = context;
-        this.buffer = new LinkedList<>();
-        this.means = new EnumMap<>(SignalState.State.class);
-        for (var state : states) {
-            add(state);
-        }
-    }
+    private final Collection<SignalState> buffer; // BUG
+    private final OneDimensionDiscreteClustering<Void, Integer> clustering;
 
     @Override
     public void map(SignalState state, Consumer<SignalValue> next) {
-        if (buffer.size() < MAX_SAMPLES_QTY) {
-            add(state);
-        } else {
-
+        buffer.add(state);
+        if (buffer.size() > MAX_SAMPLES_QTY) {
+            context.changeDelegate(process(next));
         }
     }
 
     @Override
     public void complete(Consumer<SignalValue> next) {
-
+        process(next);
     }
 
-    private void add(SignalState signalState) {
-        buffer.add(signalState);
-        means.put(
-                signalState.getState(),
-                ofNullable(means.get(signalState.getState()))
-                        .map(mean -> mean.add(signalState.getDuration()))
-                        .orElseGet(() -> new Mean(signalState.getDuration())));
+    private StableStateValueMapper process(Consumer<SignalValue> next) {
+        StableStateValueMapper mapper = new StableStateValueMapper(context, null);
+/*        List<Range<Integer>> ranges = clustering.getClusters(
+                buffer.stream()
+                        .map(SignalState::getDuration)
+                        .collect(Collectors.toList())); */
+        return null;
     }
 }

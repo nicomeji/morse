@@ -3,7 +3,7 @@ package morse.signal;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.mapper.UndeterminedStateValueMapper;
-import morse.utils.mapper.FluxScanner.Scanner;
+import morse.utils.mappers.FluxScanner.Scanner;
 
 import java.util.function.Consumer;
 

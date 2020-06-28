@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalState.State;
 import morse.models.SignalValue;
-import morse.utils.mapper.FluxScanner;
+import morse.utils.mappers.FluxScanner;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 

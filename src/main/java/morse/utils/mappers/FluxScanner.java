@@ -1,4 +1,4 @@
-package morse.utils.mapper;
+package morse.utils.mappers;
 
 import lombok.AllArgsConstructor;
 import org.reactivestreams.Subscriber;

@@ -1,8 +1,10 @@
-package morse.utils.tuples;
+package morse.utils.statistics;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+import java.util.List;
+
+@Value
 public class Range<T extends Comparable<T>> {
     private final T from;
     private final T to;
@@ -15,6 +17,12 @@ public class Range<T extends Comparable<T>> {
             this.from = t2;
             this.to = t1;
         }
+    }
+
+    public static <T extends Comparable<T>> Range<T> containing(List<T> elements) {
+        return new Range<>(
+                elements.stream().min(Comparable::compareTo).orElseThrow(IllegalArgumentException::new),
+                elements.stream().max(Comparable::compareTo).orElseThrow(IllegalArgumentException::new));
     }
 
     public boolean contains(T t) {
