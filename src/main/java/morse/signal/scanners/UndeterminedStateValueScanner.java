@@ -1,6 +1,5 @@
-package morse.signal.mapper;
+package morse.signal.scanners;
 
-import lombok.RequiredArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.StateValueMapper;
@@ -16,16 +15,20 @@ import java.util.function.Consumer;
  * A single pulse is not enough to assume anything.
  * A second SignalState means that
  */
-@RequiredArgsConstructor
-public class UndeterminedStateValueMapper implements Scanner<SignalState, SignalValue> {
-    private final List<SignalState> initialStates = new LinkedList<>();
+public class UndeterminedStateValueScanner implements Scanner<SignalState, SignalValue> {
+    private final List<SignalState> initialStates;
     private final StateValueMapper context;
+
+    public UndeterminedStateValueScanner(StateValueMapper context) {
+        this.initialStates = new LinkedList<>();
+        this.context = context;
+    }
 
     @Override
     public void map(SignalState element, Consumer<SignalValue> next) {
         initialStates.add(element);
         if (initialStates.size() == 3) {
-            context.changeDelegate(new UnstableStateValueMapper(context, initialStates, null));
+            context.changeDelegate(new UnstableStateValueScanner(context, initialStates, null));
         }
     }
 

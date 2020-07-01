@@ -11,15 +11,11 @@ import reactor.core.publisher.Flux;
 @Service
 @AllArgsConstructor
 public class SignalProcessor {
-    public final FluxScanner<SignalState, SignalValue> mapper;
+    private final FluxScanner<SignalState, SignalValue> mapper;
 
-    public Flux<SignalValue> process(Flux<Integer> signal) {
+    public Flux<SignalValue> process(Flux<State> signal) {
         return mapper.apply(
                 signal.bufferUntilChanged()
-                        .map(unchanged -> new SignalState(mapState(unchanged.get(0)), unchanged.size())));
-    }
-
-    private State mapState(int value) {
-        return value == 0 ? State.DOWN : State.UP;
+                        .map(unchanged -> new SignalState(unchanged.get(0), unchanged.size())));
     }
 }

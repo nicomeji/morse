@@ -52,6 +52,11 @@
             <scope>provided</scope>
             <version>${lombok.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>

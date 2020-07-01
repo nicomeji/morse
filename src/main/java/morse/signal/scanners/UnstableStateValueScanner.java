@@ -1,4 +1,4 @@
-package morse.signal.mapper;
+package morse.signal.scanners;
 
 import lombok.AllArgsConstructor;
 import morse.models.SignalState;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * Here I am using "Jenks Natural Breaks" algorithm.
  */
 @AllArgsConstructor
-class UnstableStateValueMapper implements Scanner<SignalState, SignalValue> {
+class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
     public static final int MAX_SAMPLES_QTY = 20;
 
     private final StateValueMapper context;
@@ -37,8 +37,8 @@ class UnstableStateValueMapper implements Scanner<SignalState, SignalValue> {
         process(next);
     }
 
-    private StableStateValueMapper process(Consumer<SignalValue> next) {
-        StableStateValueMapper mapper = new StableStateValueMapper(context, null);
+    private StableStateValueScanner process(Consumer<SignalValue> next) {
+        StableStateValueScanner mapper = new StableStateValueScanner(context, null);
 /*        List<Range<Integer>> ranges = clustering.getClusters(
                 buffer.stream()
                         .map(SignalState::getDuration)

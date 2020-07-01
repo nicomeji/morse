@@ -1,4 +1,4 @@
-package morse.signal.mapper;
+package morse.signal.scanners;
 
 import lombok.AllArgsConstructor;
 import morse.models.SignalState;
@@ -20,7 +20,7 @@ import static java.util.Collections.emptyList;
  * In case complete is called, it won't push any SignalValue (everything was already pushed in "map").
  */
 @AllArgsConstructor
-class StableStateValueMapper implements Scanner<SignalState, SignalValue> {
+class StableStateValueScanner implements Scanner<SignalState, SignalValue> {
     public static final int BUFFER_CAPACITY = 50;
 
     private final StateValueMapper context;
@@ -39,7 +39,7 @@ class StableStateValueMapper implements Scanner<SignalState, SignalValue> {
         if (!SignalValue.UNDEFINED.equals(value)) {
             next.accept(value);
         } else {
-            context.changeDelegate(new UnstableStateValueMapper(context, buffer, null));
+            context.changeDelegate(new UnstableStateValueScanner(context, buffer, null));
         }
     }
 

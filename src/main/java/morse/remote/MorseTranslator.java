@@ -1,15 +1,21 @@
 package morse.remote;
 
-import morse.config.CacheConfig;
+import lombok.AllArgsConstructor;
+import morse.cache.MorseCache;
 import morse.models.SignalMeaning;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
+@AllArgsConstructor
 public class MorseTranslator {
-    @Cacheable(CacheConfig.CODES_MEANING)
-    public Mono<SignalMeaning> translate(String morse) {
-        return null;
+    private final MorseCache morseCache;
+    private final MorseConnector morseConnector;
+
+    public Mono<SignalMeaning> translate(final String morseCode) {
+        final Mono<SignalMeaning> retrieve = morseCache.retrieve(morseCode);
+        return retrieve.switchIfEmpty(
+                morseConnector.requestTranslation(morseCode)
+                        .doOnNext(signalMeaning -> morseCache.save(morseCode, signalMeaning)));
     }
 }

@@ -2,13 +2,12 @@ package morse.signal;
 
 import morse.models.SignalState;
 import morse.models.SignalValue;
-import morse.signal.mapper.UndeterminedStateValueMapper;
 import morse.utils.mappers.FluxScanner.Scanner;
 
 import java.util.function.Consumer;
 
 public class StateValueMapper implements Scanner<SignalState, SignalValue> {
-    private Scanner<SignalState, SignalValue> delegate = new UndeterminedStateValueMapper(this);
+    private Scanner<SignalState, SignalValue> delegate;
 
     @Override
     public void map(SignalState element, Consumer<SignalValue> next) {
