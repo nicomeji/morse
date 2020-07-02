@@ -1,8 +1,8 @@
 package morse.signal.scanners;
 
+import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
-import morse.signal.StateValueMapper;
 import morse.utils.mappers.FluxScanner.Scanner;
 
 import java.util.LinkedList;
@@ -15,25 +15,24 @@ import java.util.function.Consumer;
  * A single pulse is not enough to assume anything.
  * A second SignalState means that
  */
-public class UndeterminedStateValueScanner implements Scanner<SignalState, SignalValue> {
-    private final List<SignalState> initialStates;
-    private final StateValueMapper context;
+@AllArgsConstructor
+class UndeterminedStateValueScanner implements Scanner<SignalState, SignalValue> {
+    static final int MAX_SAMPLES_QTY = 3;
 
-    public UndeterminedStateValueScanner(StateValueMapper context) {
-        this.initialStates = new LinkedList<>();
-        this.context = context;
-    }
+    private final List<SignalState> initialStates = new LinkedList<>();
+    private final StateValueScanner context;
+    private final StateValueScannerFactory scannerFactory;
 
     @Override
     public void map(SignalState element, Consumer<SignalValue> next) {
         initialStates.add(element);
-        if (initialStates.size() == 3) {
-            context.changeDelegate(new UnstableStateValueScanner(context, initialStates, null));
+        if (initialStates.size() > MAX_SAMPLES_QTY) {
+            context.setDelegate(scannerFactory.unstable(context, initialStates));
         }
     }
 
     @Override
     public void complete(Consumer<SignalValue> next) {
-        next.accept(SignalValue.UNDEFINED);
+        initialStates.forEach(s -> next.accept(SignalValue.UNDEFINED));
     }
 }

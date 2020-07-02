@@ -3,12 +3,16 @@ package morse.signal.scanners;
 import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
-import morse.signal.StateValueMapper;
-import morse.signal.clustering.OneDimensionDiscreteClustering;
+import morse.signal.clustering.JenksNaturalBreaksClustering;
 import morse.utils.mappers.FluxScanner.Scanner;
+import morse.utils.statistics.Range;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import static morse.models.SignalValue.*;
 
 /**
  * There are enough samples to determinate some values, but with high error rate.
@@ -18,31 +22,48 @@ import java.util.function.Consumer;
  */
 @AllArgsConstructor
 class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
-    public static final int MAX_SAMPLES_QTY = 20;
+    static final int MAX_SAMPLES_QTY = 50;
 
-    private final StateValueMapper context;
-    private final Collection<SignalState> buffer; // BUG
-    private final OneDimensionDiscreteClustering<Void, Integer> clustering;
+    private final StateValueScanner context;
+    private final List<SignalState> buffer;
+    private final JenksNaturalBreaksClustering clustering;
+    private final StateValueScannerFactory scannerFactory;
 
     @Override
     public void map(SignalState state, Consumer<SignalValue> next) {
         buffer.add(state);
         if (buffer.size() > MAX_SAMPLES_QTY) {
-            context.changeDelegate(process(next));
+            context.setDelegate(process(next));
         }
     }
 
     @Override
     public void complete(Consumer<SignalValue> next) {
-        process(next);
+        process(next).complete(next);
     }
 
-    private StableStateValueScanner process(Consumer<SignalValue> next) {
-        StableStateValueScanner mapper = new StableStateValueScanner(context, null);
-/*        List<Range<Integer>> ranges = clustering.getClusters(
+    private Scanner<SignalState, SignalValue> process(Consumer<SignalValue> next) {
+        final Scanner<SignalState, SignalValue> stable = scannerFactory.stable(context, ranges());
+        buffer.forEach(s -> stable.map(s, next));
+        return stable;
+    }
+
+    private Map<SignalState.State, Map<Range<Integer>, SignalValue>> ranges() {
+        final List<Range<Integer>> clusters = clustering.getClusters(
                 buffer.stream()
                         .map(SignalState::getDuration)
-                        .collect(Collectors.toList())); */
-        return null;
+                        .collect(Collectors.toList()));
+
+        final Map<Range<Integer>, SignalValue> upValueMap = Map.of(
+                clusters.get(0), DOT,
+                clusters.get(1), LINE);
+
+        final Map<Range<Integer>, SignalValue> downValueMap = Map.of(
+                clusters.get(0), BREAK,
+                clusters.get(1), SPACE);
+
+        return Map.of(
+                SignalState.State.UP, upValueMap,
+                SignalState.State.DOWN, downValueMap);
     }
 }

@@ -1,12 +1,16 @@
-package morse.signal;
+package morse.signal.scanners;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.utils.mappers.FluxScanner.Scanner;
 
 import java.util.function.Consumer;
 
-public class StateValueMapper implements Scanner<SignalState, SignalValue> {
+@ToString
+@EqualsAndHashCode
+class StateValueScanner implements Scanner<SignalState, SignalValue> {
     private Scanner<SignalState, SignalValue> delegate;
 
     @Override
@@ -19,7 +23,7 @@ public class StateValueMapper implements Scanner<SignalState, SignalValue> {
         delegate.complete(next);
     }
 
-    public void changeDelegate(Scanner<SignalState, SignalValue> delegate) {
+    void setDelegate(Scanner<SignalState, SignalValue> delegate) {
         this.delegate = delegate;
     }
 }

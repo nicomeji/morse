@@ -1,24 +1,18 @@
-package morse.signal.clustering.impl;
+package morse.signal.clustering;
 
-import morse.signal.clustering.DiscreteClusters;
-import morse.signal.clustering.OneDimensionDiscreteClustering;
 import morse.utils.statistics.Mean;
 import morse.utils.statistics.Minimizer;
 import morse.utils.statistics.Range;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JenksNaturalBreaksClustering<CLASS>
-        implements OneDimensionDiscreteClustering<CLASS, Integer> {
-    @Override
-    public DiscreteClusters<CLASS, Integer> getClusters(
-            CLASS firstClass,
-            CLASS secondClass,
-            Collection<Integer> samples) {
-
+@Component
+public class JenksNaturalBreaksClustering {
+    public List<Range<Integer>> getClusters(Collection<Integer> samples) {
         List<Integer> sortedSamples = samples.stream()
                 .sorted()
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -27,9 +21,9 @@ public class JenksNaturalBreaksClustering<CLASS>
                 new Range<>(1, sortedSamples.size() - 1),
                 pivot -> sdcmAll(sortedSamples, pivot));
 
-        int pivot = sdcmMinimizer.relativeMin(samples.size()/2);
+        int pivot = sdcmMinimizer.relativeMin(samples.size() / 2);
 
-        return new OneDimensionDiscreteClusters<>(firstClass, secondClass, sortedSamples, pivot);
+        return null;
     }
 
     /**
