@@ -30,8 +30,8 @@ public class UnstableStateValueScannerTest {
                 LONG_SIGNAL, LINE);
 
         Map<Range<Integer>, SignalValue> downValueMap = Map.of(
-                SHORT_SIGNAL, BREAK,
-                LONG_SIGNAL, SPACE);
+                SHORT_SIGNAL, SPACE,
+                LONG_SIGNAL, BREAK);
 
         RANGES = Map.of(
                 SignalState.State.UP, upValueMap,

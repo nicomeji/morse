@@ -59,8 +59,8 @@ class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
                 clusters.get(1), LINE);
 
         final Map<Range<Integer>, SignalValue> downValueMap = Map.of(
-                clusters.get(0), BREAK,
-                clusters.get(1), SPACE);
+                clusters.get(0), SPACE,
+                clusters.get(1), BREAK);
 
         return Map.of(
                 SignalState.State.UP, upValueMap,

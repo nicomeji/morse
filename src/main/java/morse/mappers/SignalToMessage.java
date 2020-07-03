@@ -8,7 +8,8 @@ import reactor.core.publisher.Mono;
 @Component
 public class SignalToMessage {
     public Mono<String> map(Flux<SignalMeaning> signal) {
-        return signal.collectList()
+        return signal.map(SignalMeaning::getCharacter)
+                .collectList()
                 .map(chars -> {
                     StringBuilder sb = new StringBuilder();
                     chars.forEach(sb::append);
