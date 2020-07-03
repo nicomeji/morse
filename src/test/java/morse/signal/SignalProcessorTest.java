@@ -13,7 +13,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static morse.models.SignalState.State.DOWN;
 import static morse.models.SignalState.State.UP;

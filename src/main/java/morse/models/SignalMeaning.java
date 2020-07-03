@@ -7,5 +7,5 @@ import lombok.Value;
 public class SignalMeaning {
     @NonNull
     private final String morse;
-    private final java.lang.Character character;
+    private final Character character;
 }

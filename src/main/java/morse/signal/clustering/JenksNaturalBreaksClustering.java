@@ -22,8 +22,15 @@ public class JenksNaturalBreaksClustering {
                 pivot -> sdcmAll(sortedSamples, pivot));
 
         int pivot = sdcmMinimizer.relativeMin(samples.size() / 2);
+        return List.of(
+                containing(sortedSamples.subList(0, pivot)),
+                containing(sortedSamples.subList(pivot, sortedSamples.size())));
+    }
 
-        return null;
+    private Range<Integer> containing(List<Integer> elements) {
+        return new Range<>(
+                elements.stream().min(Comparable::compareTo).orElseThrow(IllegalArgumentException::new),
+                elements.stream().max(Comparable::compareTo).orElseThrow(IllegalArgumentException::new));
     }
 
     /**

@@ -21,6 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Utils -->
+        <springboot.version>2.2.7.RELEASE</springboot.version>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <lombok.version>1.18.8</lombok.version>
 
@@ -104,6 +105,21 @@
                     </annotationProcessorPaths>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>morse.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -19,12 +19,6 @@ public class Range<T extends Comparable<T>> {
         }
     }
 
-    public static <T extends Comparable<T>> Range<T> containing(List<T> elements) {
-        return new Range<>(
-                elements.stream().min(Comparable::compareTo).orElseThrow(IllegalArgumentException::new),
-                elements.stream().max(Comparable::compareTo).orElseThrow(IllegalArgumentException::new));
-    }
-
     public boolean contains(T t) {
         return from.compareTo(t) <= 0 && t.compareTo(to) <= 0;
     }

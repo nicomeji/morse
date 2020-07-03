@@ -5,10 +5,8 @@ import morse.models.SignalState;
 import morse.models.SignalState.State;
 import morse.models.SignalValue;
 import morse.utils.mappers.FluxScanner;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-@Service
 @AllArgsConstructor
 public class SignalProcessor {
     private final FluxScanner<SignalState, SignalValue> mapper;

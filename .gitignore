@@ -4,4 +4,6 @@
 # maven
 target/
 
+external_translator/node_modules/
+external_translator/package-lock.json
 
