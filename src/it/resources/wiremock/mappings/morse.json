@@ -1,0 +1,652 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "a"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-..."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "b"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-.-."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "c"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-.."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "d"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "e"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "..-."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "f"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "--."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "g"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "...."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "h"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "i"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".---"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "j"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-.-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "k"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".-.."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "l"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "--"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "m"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "n"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "---"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "o"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".--."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "p"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "--.-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "q"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".-."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "r"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "..."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "s"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "t"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "-"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "..-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "u"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "...-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "v"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".--"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "w"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-..-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "x"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-.--"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "y"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "--.."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "z"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": ".----"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "1"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "..---"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "2"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "...--"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "3"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "....-"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "4"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "....."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "5"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-...."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "6"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "--..."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "7"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "---.."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "8"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "----."
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "9"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/morse",
+        "queryParameters": {
+          "code": {
+            "equalTo": "-----"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "0"
+      }
+    }
+  ]
+}

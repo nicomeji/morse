@@ -27,6 +27,7 @@
 
         <!-- Test dependencies -->
         <karate.version>0.9.2</karate.version>
+        <wiremock-maven-plugin.version>4.4.0</wiremock-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -178,6 +179,29 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <groupId>uk.co.automatictester</groupId>
+                        <artifactId>wiremock-maven-plugin</artifactId>
+                        <version>${wiremock-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>start-wiremock</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <dir>${project.basedir}/src/it/resources/wiremock</dir>
+                                    <params>--port=3000 --verbose</params>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-wiremock</id>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <executions>
@@ -189,7 +213,7 @@
                                 <configuration>
                                     <wait>1000</wait>
                                     <maxAttempts>240</maxAttempts>
-                                    <folders>${project.basedir}/conf/integration</folders>
+                                    <folders>${project.basedir}/src/it/resources</folders>
                                 </configuration>
                             </execution>
                             <execution>
