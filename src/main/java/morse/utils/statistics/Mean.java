@@ -6,10 +6,11 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-@EqualsAndHashCode(callSuper = false)
 public class Mean {
     private final int summation;
     private final int quantity;
+
+    @EqualsAndHashCode.Exclude
     private final double value;
 
     public Mean(List<Integer> samples) {

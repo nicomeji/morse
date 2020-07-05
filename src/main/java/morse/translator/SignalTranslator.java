@@ -16,7 +16,7 @@ import static morse.models.SignalValue.*;
 @Service
 @AllArgsConstructor
 public class SignalTranslator {
-    private static final String EOF = ".-.-.-";
+    public static final String EOF = ".-.-.-";
 
     private final MorseTranslator translator;
 
@@ -28,7 +28,7 @@ public class SignalTranslator {
                 .map(this::mapToMorse)
                 .takeUntil(isEqual(EOF))
                 .filter(not(isEqual(EOF)))
-                .flatMap(translator::translate);
+                .concatMap(translator::translate);
     }
 
     private String mapToMorse(List<SignalValue> signalValues) {

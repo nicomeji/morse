@@ -2,7 +2,7 @@ Feature: Create promocode
 
 Background:
   * url 'http://localhost:8080/morse'
-  * def morseSignal = read('morseSignal.json')
+  * def morseSignal = read('mocks/shortSignal.json')
 
 Scenario:
   Given path '/decode'

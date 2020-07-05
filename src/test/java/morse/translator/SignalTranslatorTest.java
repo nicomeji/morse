@@ -55,6 +55,29 @@ public class SignalTranslatorTest {
     }
 
     @Test
+    public void validateSignalOrdering() {
+        final Duration delay = Duration.ofMillis(100);
+        when(translator.translate(MORSE_A.getMorse())).thenReturn(Mono.just(MORSE_A));
+        when(translator.translate(MORSE_B.getMorse())).thenReturn(Mono.just(MORSE_B).delayElement(delay));
+        when(translator.translate(MORSE_C.getMorse())).thenReturn(Mono.just(MORSE_C));
+        Flux<SignalValue> signal = Flux.just(
+                /* A: */ DOT, SPACE, LINE, BREAK,
+                /* B: */ LINE, SPACE, DOT, SPACE, DOT, SPACE, DOT, BREAK,
+                /* C: */ LINE, SPACE, DOT, SPACE, LINE, DOT, BREAK);
+
+        StepVerifier.create(signalTranslator.translate(signal))
+                .expectNext(MORSE_A)
+                .expectNext(MORSE_B)
+                .expectNext(MORSE_C)
+                .expectComplete()
+                .verify(Duration.ofSeconds(3));
+
+        verify(translator).translate(MORSE_A.getMorse());
+        verify(translator).translate(MORSE_B.getMorse());
+        verify(translator).translate(MORSE_C.getMorse());
+    }
+
+    @Test
     public void validateSignalStopProcessing() {
         when(translator.translate(MORSE_A.getMorse())).thenReturn(Mono.just(MORSE_A));
         when(translator.translate(MORSE_B.getMorse())).thenReturn(Mono.just(MORSE_B));
