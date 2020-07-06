@@ -8,11 +8,8 @@ import morse.utils.mappers.FluxScanner.Scanner;
 import morse.utils.statistics.Range;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import static morse.models.SignalValue.*;
 
 /**
  * There are enough samples to determinate some values, but with high error rate.
@@ -43,27 +40,17 @@ class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
     }
 
     private Scanner<SignalState, SignalValue> process(Consumer<SignalValue> next) {
-        final Scanner<SignalState, SignalValue> stable = scannerFactory.stable(context, ranges());
-        buffer.forEach(s -> stable.map(s, next));
-        return stable;
-    }
-
-    private Map<SignalState.State, Map<Range<Integer>, SignalValue>> ranges() {
         final List<Range<Integer>> clusters = clustering.getClusters(
                 buffer.stream()
+                        .filter(signal -> SignalState.State.UP.equals(signal.getState()))
                         .map(SignalState::getDuration)
                         .collect(Collectors.toList()));
 
-        final Map<Range<Integer>, SignalValue> upValueMap = Map.of(
-                clusters.get(0), DOT,
-                clusters.get(1), LINE);
+        final Range<Integer> shortSignal = clusters.get(0);
+        final Range<Integer> longSignal = clusters.get(1);
 
-        final Map<Range<Integer>, SignalValue> downValueMap = Map.of(
-                clusters.get(0), SPACE,
-                clusters.get(1), BREAK);
-
-        return Map.of(
-                SignalState.State.UP, upValueMap,
-                SignalState.State.DOWN, downValueMap);
+        final Scanner<SignalState, SignalValue> stable = scannerFactory.stable(context, shortSignal, longSignal);
+        buffer.forEach(s -> stable.map(s, next));
+        return stable;
     }
 }

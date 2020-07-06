@@ -8,35 +8,17 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
-import static morse.models.SignalValue.*;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class UnstableStateValueScannerTest {
-    private static final Map<SignalState.State, Map<Range<Integer>, SignalValue>> RANGES;
     private static final Range<Integer> SHORT_SIGNAL = new Range<>(3, 5);
     private static final Range<Integer> LONG_SIGNAL = new Range<>(9, 15);
-
-    static {
-        Map<Range<Integer>, SignalValue> upValueMap = Map.of(
-                SHORT_SIGNAL, DOT,
-                LONG_SIGNAL, LINE);
-
-        Map<Range<Integer>, SignalValue> downValueMap = Map.of(
-                SHORT_SIGNAL, SPACE,
-                LONG_SIGNAL, BREAK);
-
-        RANGES = Map.of(
-                SignalState.State.UP, upValueMap,
-                SignalState.State.DOWN, downValueMap);
-    }
 
     @Test
     public void scanHasNoEffect() {
@@ -67,14 +49,14 @@ public class UnstableStateValueScannerTest {
 
         when(clustering.getClusters(any())).thenReturn(asList(SHORT_SIGNAL, LONG_SIGNAL));
         StableStateValueScanner nextScanner = mock(StableStateValueScanner.class);
-        when(scannerFactory.stable(context, RANGES)).thenReturn(nextScanner);
+        when(scannerFactory.stable(context, SHORT_SIGNAL, LONG_SIGNAL)).thenReturn(nextScanner);
         doNothing().when(nextScanner).map(any(), any());
 
         List<SignalValue> values = new LinkedList<>();
         signal.forEach(s -> scanner.map(s, values::add));
 
         assertTrue(values.isEmpty());
-        verify(scannerFactory).stable(context, RANGES);
+        verify(scannerFactory).stable(context, SHORT_SIGNAL, LONG_SIGNAL);
         verify(nextScanner, times(UnstableStateValueScanner.MAX_SAMPLES_QTY + 1)).map(any(), any());
         verify(context).setDelegate(any());
     }
@@ -89,7 +71,7 @@ public class UnstableStateValueScannerTest {
 
         when(clustering.getClusters(any())).thenReturn(asList(SHORT_SIGNAL, LONG_SIGNAL));
         StableStateValueScanner nextScanner = mock(StableStateValueScanner.class);
-        when(scannerFactory.stable(context, RANGES)).thenReturn(nextScanner);
+        when(scannerFactory.stable(context, SHORT_SIGNAL, LONG_SIGNAL)).thenReturn(nextScanner);
         doNothing().when(nextScanner).map(any(), any());
         doNothing().when(nextScanner).complete(any());
 
@@ -101,7 +83,7 @@ public class UnstableStateValueScannerTest {
         scanner.complete(values::add);
         assertTrue(values.isEmpty());
 
-        verify(scannerFactory).stable(context, RANGES);
+        verify(scannerFactory).stable(context, SHORT_SIGNAL, LONG_SIGNAL);
         verify(nextScanner, times(2)).map(any(), any());
         verify(nextScanner).complete(any());
         verify(context, never()).setDelegate(any());

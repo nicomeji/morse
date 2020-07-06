@@ -62,17 +62,7 @@ public class SaveAsMorseSignal {
 
     private Random random = new Random();
 
-    public void save(BufferedReader reader, BufferedWriter writer) {
-        reader.lines().forEach(line -> {
-            try {
-                saveLine(line, writer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    private void saveLine(String message, BufferedWriter writer) throws IOException {
+    public void saveLine(String message, BufferedWriter writer) throws IOException {
         boolean needSeparation = true;
         for (char c : message.toCharArray()) {
             if (needSeparation) {

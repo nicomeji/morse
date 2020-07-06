@@ -3,14 +3,13 @@ package morse.signal.scanners;
 import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
+import morse.signal.converters.StateConverter;
 import morse.utils.mappers.FluxScanner.Scanner;
-import morse.utils.statistics.Range;
 
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.function.Consumer;
 
-import static java.util.Collections.emptyMap;
+import static java.util.Objects.requireNonNull;
 
 /**
  * It can push SignalValue in deterministic way with low level of error.
@@ -22,19 +21,13 @@ class StableStateValueScanner implements Scanner<SignalState, SignalValue> {
 
     private final LinkedList<SignalState> queue = new LinkedList<>();
     private final StateValueScanner context;
-    private final Map<SignalState.State, Map<Range<Integer>, SignalValue>> ranges;
+    private final StateConverter stateConverter;
     private final StateValueScannerFactory scannerFactory;
 
     @Override
     public void map(SignalState signalState, Consumer<SignalValue> next) {
         buffer(signalState);
-        SignalValue value = ranges.getOrDefault(signalState.getState(), emptyMap())
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getKey().contains(signalState.getDuration()))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse(SignalValue.UNDEFINED);
+        SignalValue value = requireNonNull(stateConverter.toSignalValue(signalState));
         if (!SignalValue.UNDEFINED.equals(value)) {
             next.accept(value);
         } else {

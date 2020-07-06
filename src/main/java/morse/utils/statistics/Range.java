@@ -2,8 +2,6 @@ package morse.utils.statistics;
 
 import lombok.Value;
 
-import java.util.List;
-
 @Value
 public class Range<T extends Comparable<T>> {
     private final T from;

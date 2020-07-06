@@ -91,8 +91,7 @@ public class MorseConnectorTest {
                 .expectNext('s')
                 .expectNext('o')
                 .expectNext('s')
-                .expectComplete()
-                .verify(Duration.ofSeconds(3));
+                .expectComplete();
     }
 
     private static MorseConnector connector(int port) {
