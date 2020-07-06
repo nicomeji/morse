@@ -22,6 +22,7 @@ public class MorseConnectorTest {
     private static final String INVALID_RES = "invalid_response";
     private static final String O_MORSE = "---";
     private static final String S_MORSE = "...";
+    private static final String WRONG_CODE = "wrong";
 
     private static WireMockServer mockServer;
     private static MorseConnector connector;
@@ -47,7 +48,7 @@ public class MorseConnectorTest {
                                 .withHeader("Content-Type", "text/plain")
                                 .withBody("s")));
 
-        mockServer.stubFor(get(urlPathEqualTo(MORSE)).withQueryParam(CODE, equalTo(SignalTranslator.EOF))
+        mockServer.stubFor(get(urlPathEqualTo(MORSE)).withQueryParam(CODE, equalTo(WRONG_CODE))
                 .willReturn(
                         aResponse()
                                 .withStatus(404)
