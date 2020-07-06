@@ -6,28 +6,33 @@ import morse.models.SignalValue;
 import morse.remote.MorseTranslator;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-
-import static morse.models.SignalValue.BREAK;
-import static morse.models.SignalValue.LONG_SPACE;
 
 @Service
 @AllArgsConstructor
 public class SignalTranslator {
+    public static final SignalMeaning SEPARATOR = new SignalMeaning("", ' ');
     private final MorseTranslator translator;
     private final SignalSegmentation segmentation;
 
     public Flux<SignalMeaning> translate(Flux<SignalValue> signal) {
         return segmentation.chunk(signal)
-                .map(this::mapToMorse)
-                .concatMap(translator::translate);
+                .concatMap(this::toSignalMeaning);
+    }
+
+    private Mono<SignalMeaning> toSignalMeaning(List<SignalValue> signalValues) {
+        if (SignalSegmentation.SEPARATOR.equals(signalValues)) {
+            return Mono.just(SEPARATOR);
+        } else {
+            return translator.translate(mapToMorse(signalValues));
+        }
     }
 
     private String mapToMorse(List<SignalValue> signalValues) {
         StringBuilder sb = new StringBuilder();
         signalValues.stream()
-                .filter(s -> !BREAK.equals(s) && !LONG_SPACE.equals(s))
                 .map(this::mapToChar)
                 .forEach(sb::append);
         return sb.toString();

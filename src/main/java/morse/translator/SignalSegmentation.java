@@ -15,7 +15,8 @@ import static morse.models.SignalValue.*;
 
 @Component
 public class SignalSegmentation {
-    public static final List<SignalValue> EOF = asList(DOT, LINE, DOT, LINE, DOT, LINE);
+    static final List<SignalValue> EOF = asList(DOT, LINE, DOT, LINE, DOT, LINE);
+    static final List<SignalValue> SEPARATOR = singletonList(LONG_SPACE);
 
     public Flux<List<SignalValue>> chunk(Flux<SignalValue> signal) {
         return signal.takeUntil(isEqual(STOP))
@@ -41,7 +42,7 @@ public class SignalSegmentation {
         } else {
             return Flux.create(sink -> {
                 sink.next(signal.subList(0, index));
-                sink.next(singletonList(LONG_SPACE));
+                sink.next(SEPARATOR);
                 sink.complete();
             });
         }
