@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import morse.models.SignalMeaning;
 import morse.models.SignalValue;
 import morse.remote.MorseTranslator;
+import morse.signal.SignalSegmentation;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,13 +14,11 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class SignalTranslator {
-    public static final SignalMeaning SEPARATOR = new SignalMeaning("", ' ');
+    public static final SignalMeaning SEPARATOR = new SignalMeaning(null, ' ');
     private final MorseTranslator translator;
-    private final SignalSegmentation segmentation;
 
-    public Flux<SignalMeaning> translate(Flux<SignalValue> signal) {
-        return segmentation.chunk(signal)
-                .concatMap(this::toSignalMeaning);
+    public Flux<SignalMeaning> translate2Human(Flux<List<SignalValue>> signal) {
+        return signal.concatMap(this::toSignalMeaning);
     }
 
     private Mono<SignalMeaning> toSignalMeaning(List<SignalValue> signalValues) {

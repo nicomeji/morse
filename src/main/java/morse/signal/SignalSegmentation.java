@@ -1,4 +1,4 @@
-package morse.translator;
+package morse.signal;
 
 import morse.models.SignalValue;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import static morse.models.SignalValue.*;
 @Component
 public class SignalSegmentation {
     static final List<SignalValue> EOF = asList(DOT, LINE, DOT, LINE, DOT, LINE);
-    static final List<SignalValue> SEPARATOR = singletonList(LONG_SPACE);
+    public static final List<SignalValue> SEPARATOR = singletonList(LONG_SPACE);
 
     public Flux<List<SignalValue>> chunk(Flux<SignalValue> signal) {
         return signal.takeUntil(isEqual(STOP))

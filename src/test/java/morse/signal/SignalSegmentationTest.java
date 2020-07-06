@@ -1,9 +1,10 @@
-package morse.translator;
+package morse.signal;
 
 import morse.models.SignalValue;
 
 import static morse.models.SignalValue.*;
 
+import morse.signal.SignalSegmentation;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;

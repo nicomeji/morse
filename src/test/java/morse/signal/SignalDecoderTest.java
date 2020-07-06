@@ -13,24 +13,32 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.List;
 
 import static morse.models.SignalState.State.DOWN;
 import static morse.models.SignalState.State.UP;
+import static morse.models.SignalValue.DOT;
+import static morse.models.SignalValue.SPACE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SignalProcessorTest {
+public class SignalDecoderTest {
     @Mock
     private FluxScanner<SignalState, SignalValue> mapper;
 
+    @Mock
+    private SignalSegmentation segmentation;
+
     @InjectMocks
-    private SignalProcessor processor;
+    private SignalDecoder processor;
 
     @Test
-    public void processor() {
+    public void testDecodingSignal() {
         final Flux<State> signal = Flux.just(DOWN, DOWN, DOWN, UP, UP, DOWN, UP, UP, DOWN);
-        final Flux<SignalValue> values = Flux.empty();
+        final Flux<SignalValue> values = Flux.just(SPACE, DOT, SPACE, DOT, SPACE);
+        final List<SignalValue> morse = List.of(DOT, DOT);
+        final Flux<List<SignalValue>> morseFlux = Flux.just(morse);
 
         when(mapper.apply(any()))
                 .thenAnswer(invocation -> {
@@ -42,13 +50,16 @@ public class SignalProcessorTest {
                             .expectNext(new SignalState(UP, 2))
                             .expectNext(new SignalState(DOWN, 1))
                             .expectComplete()
-                            .verify(Duration.ofMillis(10));
+                            .verify(Duration.ofMillis(100));
                     return values;
                 });
 
-        StepVerifier.create(processor.process(signal))
+        when(segmentation.chunk(values)).thenReturn(morseFlux);
+
+        StepVerifier.create(processor.decodeBits2Morse(signal))
                 .expectSubscription()
+                .expectNext(morse)
                 .expectComplete()
-                .verify(Duration.ofMillis(10));
+                .verify(Duration.ofMillis(100));
     }
 }
