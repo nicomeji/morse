@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
  */
 @AllArgsConstructor
 class StableStateValueScanner implements Scanner<SignalState, SignalValue> {
-    static final int BUFFER_CAPACITY = 20;
+    static final int BUFFER_CAPACITY = 40;
 
     private final LinkedList<SignalState> queue = new LinkedList<>();
     private final StateValueScanner context;

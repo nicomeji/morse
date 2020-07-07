@@ -15,7 +15,7 @@ class StopConverter extends StateConverter {
     public SignalValue toSignalValue(SignalState signalState) {
         if (SignalState.State.DOWN.equals(signalState.getState()) &&
                 maxDuration < signalState.getDuration()) {
-            return SignalValue.STOP;
+            return SignalValue.SIGNAL_STOP;
         } else {
             return super.toSignalValue(signalState);
         }

@@ -22,7 +22,6 @@ public class SimpleStateConverterTest {
                 SignalValue.DOT);
 
         assertEquals(SignalValue.DOT, converter.toSignalValue(new SignalState(State.UP, 12)));
-
         verify(nextConverter, never()).toSignalValue(any());
     }
 
@@ -39,7 +38,6 @@ public class SimpleStateConverterTest {
                 SignalValue.DOT);
 
         assertEquals(SignalValue.SPACE, converter.toSignalValue(signalState));
-
         verify(nextConverter).toSignalValue(signalState);
     }
 
@@ -56,7 +54,6 @@ public class SimpleStateConverterTest {
                 SignalValue.DOT);
 
         assertEquals(SignalValue.LINE, converter.toSignalValue(signalState));
-
         verify(nextConverter).toSignalValue(signalState);
     }
 

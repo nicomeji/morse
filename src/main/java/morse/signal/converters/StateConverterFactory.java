@@ -11,26 +11,26 @@ public class StateConverterFactory {
         // The space between words is 7 dot's length.
         final Range<Integer> veryLongSignalRange = new Range<>(
                 shortSignalRange.getFrom() * 6,
-                shortSignalRange.getTo() * 12);
+                shortSignalRange.getTo() * 10);
 
         final StopConverter stopConverter = new StopConverter(null, veryLongSignalRange.getTo());
-        final StateConverter longSpaceConverter = new SimpleStateConverter(
+        final StateConverter wordSeparatorConverter = new SimpleStateConverter(
                 stopConverter,
                 veryLongSignalRange,
                 SignalState.State.DOWN,
-                SignalValue.LONG_SPACE);
+                SignalValue.WORD_SEPARATOR);
+        final StateConverter letterSeparatorConverter = new SimpleStateConverter(
+                wordSeparatorConverter,
+                longSignalRange,
+                SignalState.State.DOWN,
+                SignalValue.LETTER_SEPARATOR);
         final StateConverter spaceConverter = new SimpleStateConverter(
-                longSpaceConverter,
+                letterSeparatorConverter,
                 shortSignalRange,
                 SignalState.State.DOWN,
                 SignalValue.SPACE);
-        final StateConverter breakConverter = new SimpleStateConverter(
-                spaceConverter,
-                longSignalRange,
-                SignalState.State.DOWN,
-                SignalValue.BREAK);
         final StateConverter dotConverter = new SimpleStateConverter(
-                breakConverter,
+                spaceConverter,
                 shortSignalRange,
                 SignalState.State.UP,
                 SignalValue.DOT);

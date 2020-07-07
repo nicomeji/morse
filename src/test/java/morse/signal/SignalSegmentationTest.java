@@ -4,7 +4,6 @@ import morse.models.SignalValue;
 
 import static morse.models.SignalValue.*;
 
-import morse.signal.SignalSegmentation;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -30,7 +29,7 @@ public class SignalSegmentationTest {
 
     @Test
     public void fluxCompletesOnStopSignal() {
-        final Flux<SignalValue> signal = Flux.just(SPACE, DOT, SPACE, DOT, STOP, DOT, SPACE);
+        final Flux<SignalValue> signal = Flux.just(SPACE, DOT, SPACE, DOT, SIGNAL_STOP, DOT, SPACE);
 
         StepVerifier.create(segmentation.chunk(signal))
                 .expectNext(asList(DOT, DOT))
@@ -41,9 +40,9 @@ public class SignalSegmentationTest {
     @Test
     public void divideSignalOnEachBreak() {
         final Flux<SignalValue> signal = Flux.just(
-                BREAK, SPACE, DOT, SPACE, DOT, SPACE, DOT, BREAK,
-                LINE, SPACE, LINE, SPACE, LINE, BREAK,
-                DOT, SPACE, DOT, SPACE, DOT, BREAK);
+                LETTER_SEPARATOR, SPACE, DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR,
+                LINE, SPACE, LINE, SPACE, LINE, LETTER_SEPARATOR,
+                DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR);
 
         StepVerifier.create(segmentation.chunk(signal))
                 .expectNext(asList(DOT, DOT, DOT))
@@ -56,15 +55,15 @@ public class SignalSegmentationTest {
     @Test
     public void longSpacesAreProcessSeparately() {
         final Flux<SignalValue> signal = Flux.just(
-                LONG_SPACE, DOT, SPACE, DOT, SPACE, DOT, BREAK,
-                LINE, SPACE, LINE, SPACE, LINE, LONG_SPACE,
-                DOT, SPACE, DOT, SPACE, DOT, BREAK);
+                WORD_SEPARATOR, DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR,
+                LINE, SPACE, LINE, SPACE, LINE, WORD_SEPARATOR,
+                DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR);
 
         StepVerifier.create(segmentation.chunk(signal))
-                .expectNext(singletonList(LONG_SPACE))
+                .expectNext(singletonList(WORD_SEPARATOR))
                 .expectNext(asList(DOT, DOT, DOT))
                 .expectNext(asList(LINE, LINE, LINE))
-                .expectNext(singletonList(LONG_SPACE))
+                .expectNext(singletonList(WORD_SEPARATOR))
                 .expectNext(asList(DOT, DOT, DOT))
                 .expectComplete()
                 .verify(Duration.ofMillis(100));
@@ -73,16 +72,16 @@ public class SignalSegmentationTest {
     @Test
     public void fluxCompleteIfEOFIsReached() {
         final Flux<SignalValue> signal = Flux.just(
-                DOT, SPACE, DOT, SPACE, DOT, BREAK,
-                LINE, SPACE, LINE, SPACE, LINE, LONG_SPACE,
-                DOT, SPACE, DOT, SPACE, DOT, BREAK,
-                DOT, SPACE, LINE, SPACE, DOT, SPACE, LINE, SPACE, DOT, SPACE, LINE, BREAK,
-                DOT, SPACE, DOT, SPACE, DOT, BREAK);
+                DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR,
+                LINE, SPACE, LINE, SPACE, LINE, WORD_SEPARATOR,
+                DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR,
+                DOT, SPACE, LINE, SPACE, DOT, SPACE, LINE, SPACE, DOT, SPACE, LINE, LETTER_SEPARATOR,
+                DOT, SPACE, DOT, SPACE, DOT, LETTER_SEPARATOR);
 
         StepVerifier.create(segmentation.chunk(signal))
                 .expectNext(asList(DOT, DOT, DOT))
                 .expectNext(asList(LINE, LINE, LINE))
-                .expectNext(singletonList(LONG_SPACE))
+                .expectNext(singletonList(WORD_SEPARATOR))
                 .expectNext(asList(DOT, DOT, DOT))
                 .expectComplete()
                 .verify(Duration.ofMillis(100));

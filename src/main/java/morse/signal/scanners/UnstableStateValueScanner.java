@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @AllArgsConstructor
 class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
-    static final int MAX_SAMPLES_QTY = 50;
+    static final int MAX_SAMPLES_QTY = 80;
 
     private final StateValueScanner context;
     private final List<SignalState> buffer;

@@ -23,8 +23,7 @@ public class DecodeTest {
         try (BufferedWriter writer = getBufferedWriter(resourceDirectory.resolve("longSignal.json"))) {
             writer.write("[\n");
             asMorseSignal.saveLine(read(resourceDirectory.resolve("longMessage.txt").toString()), writer);
-            writer.write(asMorseSignal.eof() + "\n");
-            writer.write("]");
+            writer.write("\n]");
         }
     }
 

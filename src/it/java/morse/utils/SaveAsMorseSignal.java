@@ -2,7 +2,6 @@ package morse.utils;
 
 import morse.utils.statistics.Range;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -56,26 +55,28 @@ public class SaveAsMorseSignal {
         MORSE.put('0', "-----");
     }
 
-    private Range<Integer> shortRange = new Range<>(3, 6);
-    private Range<Integer> longRange = new Range<>(9, 15);
-    private Range<Integer> veryLongRange = new Range<>(21, 30);
+    private Range<Integer> shortRange = new Range<>(4, 6);
+    private Range<Integer> longRange = new Range<>(11, 15);
+    private Range<Integer> veryLongRange = new Range<>(28, 36);
 
     private Random random = new Random();
 
     public void saveLine(String message, BufferedWriter writer) throws IOException {
-        boolean needSeparation = true;
+        boolean isAfterChar = false;
         for (char c : message.toCharArray()) {
-            if (needSeparation) {
-                writer.write(letterSeparation().append(NEW_LINE).toString());
-                needSeparation = false;
-            }
             if (c == SPACE) {
+                isAfterChar = false;
                 writer.write(wordSeparation().append(NEW_LINE).toString());
             } else {
+                if (isAfterChar) {
+                    writer.write(letterSeparation().append(NEW_LINE).toString());
+                }
+                isAfterChar = true;
                 writer.write(toMorse(c).append(NEW_LINE).toString());
-                needSeparation = true;
             }
         }
+        writer.write(letterSeparation().append(NEW_LINE).toString());
+        writer.write(eof().toString());
     }
 
     private StringBuilder letterSeparation() {
@@ -86,8 +87,8 @@ public class SaveAsMorseSignal {
         return getSignalLine(DOWN, veryLongRange);
     }
 
-    public String eof() {
-        return morseToSignal(EOF).toString();
+    private StringBuilder eof() {
+        return morseToSignal(EOF);
     }
 
     private StringBuilder toMorse(char character) {
@@ -130,6 +131,6 @@ public class SaveAsMorseSignal {
     }
 
     private int signalLength(Range<Integer> range) {
-        return range.getFrom() + random.nextInt(range.getTo() - range.getFrom());
+        return range.getFrom() + random.nextInt(range.getTo() - range.getFrom() + 1);
     }
 }
