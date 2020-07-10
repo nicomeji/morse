@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import morse.models.SignalState;
 import morse.models.SignalValue;
-import morse.utils.mappers.FluxScanner.Scanner;
+import morse.utils.scanners.FluxScanner.Scanner;
 
 import java.util.function.Consumer;
 

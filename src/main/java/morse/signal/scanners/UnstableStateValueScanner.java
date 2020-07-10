@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.clustering.JenksNaturalBreaksClustering;
-import morse.utils.mappers.FluxScanner.Scanner;
+import morse.utils.scanners.FluxScanner.Scanner;
 import morse.utils.statistics.Range;
 
 import java.util.List;

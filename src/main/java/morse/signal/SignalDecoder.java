@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalState.State;
 import morse.models.SignalValue;
-import morse.utils.mappers.FluxScanner;
+import morse.utils.scanners.FluxScanner;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;

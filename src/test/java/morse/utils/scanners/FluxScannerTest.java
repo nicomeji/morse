@@ -1,4 +1,4 @@
-package morse.utils.mappers;
+package morse.utils.scanners;
 
 import org.junit.Test;
 import reactor.core.publisher.Flux;

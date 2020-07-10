@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.converters.StateConverter;
-import morse.utils.mappers.FluxScanner.Scanner;
+import morse.utils.scanners.FluxScanner.Scanner;
 
 import java.util.LinkedList;
 import java.util.function.Consumer;

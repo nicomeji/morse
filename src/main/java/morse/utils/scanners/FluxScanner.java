@@ -1,4 +1,4 @@
-package morse.utils.mappers;
+package morse.utils.scanners;
 
 import lombok.AllArgsConstructor;
 import org.reactivestreams.Subscriber;
@@ -65,9 +65,10 @@ public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
      * @param <T> From type
      * @param <U> To type
      */
+    @FunctionalInterface
     public interface Scanner<T, U> {
         void map(T element, Consumer<U> next);
 
-        void complete(Consumer<U> next);
+        default void complete(Consumer<U> next) {}
     }
 }

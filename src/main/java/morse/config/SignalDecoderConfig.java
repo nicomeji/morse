@@ -3,7 +3,7 @@ package morse.config;
 import morse.signal.SignalDecoder;
 import morse.signal.SignalSegmentation;
 import morse.signal.scanners.StateValueScannerFactory;
-import morse.utils.mappers.FluxScanner;
+import morse.utils.scanners.FluxScanner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

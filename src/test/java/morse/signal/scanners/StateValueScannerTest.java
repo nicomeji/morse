@@ -5,7 +5,7 @@ import morse.models.SignalValue;
 import morse.signal.clustering.JenksNaturalBreaksClustering;
 import morse.signal.converters.StateConverter;
 import morse.signal.converters.StateConverterFactory;
-import morse.utils.mappers.FluxScanner;
+import morse.utils.scanners.FluxScanner;
 import morse.utils.statistics.Range;
 import org.junit.Test;
 import org.junit.runner.RunWith;

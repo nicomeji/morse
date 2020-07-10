@@ -6,7 +6,7 @@ import morse.models.SignalValue;
 import morse.signal.clustering.JenksNaturalBreaksClustering;
 import morse.signal.converters.StateConverter;
 import morse.signal.converters.StateConverterFactory;
-import morse.utils.mappers.FluxScanner.Scanner;
+import morse.utils.scanners.FluxScanner.Scanner;
 import morse.utils.statistics.Range;
 import org.springframework.stereotype.Component;
 
