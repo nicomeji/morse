@@ -4,6 +4,7 @@ import morse.models.SignalState;
 import morse.models.SignalState.State;
 import morse.models.SignalValue;
 import morse.utils.mappers.FluxScanner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,7 +35,37 @@ public class SignalDecoderTest {
     private SignalDecoder processor;
 
     @Test
-    public void testDecodingSignal() {
+    public void decodingSignal() {
+        final Flux<State> signal = Flux.just(UP, UP, DOWN, UP, UP, DOWN, DOWN, DOWN, UP, UP);
+        final Flux<SignalValue> values = Flux.just(SPACE, DOT, SPACE, DOT, SPACE);
+        final List<SignalValue> morse = List.of(DOT, DOT);
+        final Flux<List<SignalValue>> morseFlux = Flux.just(morse);
+
+        when(mapper.apply(any()))
+                .thenAnswer(invocation -> {
+                    StepVerifier.create(invocation.getArgument(0))
+                            .expectSubscription()
+                            .expectNext(new SignalState(UP, 2))
+                            .expectNext(new SignalState(DOWN, 1))
+                            .expectNext(new SignalState(UP, 2))
+                            .expectNext(new SignalState(DOWN, 3))
+                            .expectNext(new SignalState(UP, 2))
+                            .expectComplete()
+                            .verify(Duration.ofMillis(100));
+                    return values;
+                });
+
+        when(segmentation.chunk(values)).thenReturn(morseFlux);
+
+        StepVerifier.create(processor.decodeBits2Morse(signal))
+                .expectSubscription()
+                .expectNext(morse)
+                .expectComplete()
+                .verify(Duration.ofMillis(100));
+    }
+
+    @Test
+    public void ignoringFirstDown() {
         final Flux<State> signal = Flux.just(DOWN, DOWN, DOWN, UP, UP, DOWN, UP, UP, DOWN);
         final Flux<SignalValue> values = Flux.just(SPACE, DOT, SPACE, DOT, SPACE);
         final List<SignalValue> morse = List.of(DOT, DOT);
@@ -44,7 +75,6 @@ public class SignalDecoderTest {
                 .thenAnswer(invocation -> {
                     StepVerifier.create(invocation.getArgument(0))
                             .expectSubscription()
-                            .expectNext(new SignalState(DOWN, 3))
                             .expectNext(new SignalState(UP, 2))
                             .expectNext(new SignalState(DOWN, 1))
                             .expectNext(new SignalState(UP, 2))
