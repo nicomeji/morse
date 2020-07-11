@@ -11,7 +11,6 @@ Background:
   }
   """
 
-@ignore
 Scenario:
   Given path '/decode'
   And request morseSignal

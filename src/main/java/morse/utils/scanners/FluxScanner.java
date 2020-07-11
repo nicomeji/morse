@@ -25,7 +25,7 @@ public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
         final Scanner<T, U> mapper = mapperSupplier.get();
 
         return flux.materialize()
-                .flatMap(signal -> Flux.create(sink -> signal.accept(new Subscriber<>() {
+                .concatMap(signal -> Flux.create(sink -> signal.accept(new Subscriber<>() {
                     @Override
                     public void onSubscribe(Subscription subscription) {
                         subscription.request(Long.MAX_VALUE);
