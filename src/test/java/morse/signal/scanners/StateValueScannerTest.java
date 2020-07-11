@@ -53,7 +53,7 @@ public class StateValueScannerTest {
         List<SignalValue> values = new LinkedList<>();
         Stream.generate(() -> SIGNAL_STATE)
                 .limit(samplesQuantity)
-                .forEach(s -> scanner.map(s, values::add));
+                .forEach(s -> scanner.accept(s, values::add));
         scanner.complete(values::add);
 
         assertEquals(samplesQuantity, values.size());

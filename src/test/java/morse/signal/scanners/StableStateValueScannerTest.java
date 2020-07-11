@@ -39,7 +39,7 @@ public class StableStateValueScannerTest {
         when(converter.toSignalValue(signalState)).thenReturn(DOT);
 
         List<SignalValue> values = new LinkedList<>();
-        scanner.map(signalState, values::add);
+        scanner.accept(signalState, values::add);
 
         assertEquals(singletonList(DOT), values);
         verify(converter).toSignalValue(signalState);
@@ -54,7 +54,7 @@ public class StableStateValueScannerTest {
         when(scannerFactory.unstable(context, singletonList(unmatchedState))).thenReturn(nextScanner);
 
         List<SignalValue> values = new LinkedList<>();
-        scanner.map(unmatchedState, values::add);
+        scanner.accept(unmatchedState, values::add);
 
         assertTrue(values.isEmpty());
         verify(scannerFactory).unstable(context, singletonList(unmatchedState));

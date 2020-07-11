@@ -29,7 +29,7 @@ public class UnstableStateValueScannerTest {
         UnstableStateValueScanner scanner = new UnstableStateValueScanner(context, buffer, clustering, scannerFactory);
 
         List<SignalValue> values = new LinkedList<>();
-        scanner.map(new SignalState(SignalState.State.UP, 6), values::add);
+        scanner.accept(new SignalState(SignalState.State.UP, 6), values::add);
 
         assertTrue(values.isEmpty());
         verify(context, never()).setDelegate(any());
@@ -50,14 +50,14 @@ public class UnstableStateValueScannerTest {
         when(clustering.getClusters(any())).thenReturn(asList(SHORT_SIGNAL, LONG_SIGNAL));
         StableStateValueScanner nextScanner = mock(StableStateValueScanner.class);
         when(scannerFactory.stable(context, SHORT_SIGNAL, LONG_SIGNAL)).thenReturn(nextScanner);
-        doNothing().when(nextScanner).map(any(), any());
+        doNothing().when(nextScanner).accept(any(), any());
 
         List<SignalValue> values = new LinkedList<>();
-        signal.forEach(s -> scanner.map(s, values::add));
+        signal.forEach(s -> scanner.accept(s, values::add));
 
         assertTrue(values.isEmpty());
         verify(scannerFactory).stable(context, SHORT_SIGNAL, LONG_SIGNAL);
-        verify(nextScanner, times(UnstableStateValueScanner.MAX_SAMPLES_QTY + 1)).map(any(), any());
+        verify(nextScanner, times(UnstableStateValueScanner.MAX_SAMPLES_QTY + 1)).accept(any(), any());
         verify(context).setDelegate(any());
     }
 
@@ -72,19 +72,19 @@ public class UnstableStateValueScannerTest {
         when(clustering.getClusters(any())).thenReturn(asList(SHORT_SIGNAL, LONG_SIGNAL));
         StableStateValueScanner nextScanner = mock(StableStateValueScanner.class);
         when(scannerFactory.stable(context, SHORT_SIGNAL, LONG_SIGNAL)).thenReturn(nextScanner);
-        doNothing().when(nextScanner).map(any(), any());
+        doNothing().when(nextScanner).accept(any(), any());
         doNothing().when(nextScanner).complete(any());
 
         List<SignalValue> values = new LinkedList<>();
-        scanner.map(new SignalState(SignalState.State.UP, 6), values::add);
-        scanner.map(new SignalState(SignalState.State.DOWN, 6), values::add);
+        scanner.accept(new SignalState(SignalState.State.UP, 6), values::add);
+        scanner.accept(new SignalState(SignalState.State.DOWN, 6), values::add);
         assertTrue(values.isEmpty());
 
         scanner.complete(values::add);
         assertTrue(values.isEmpty());
 
         verify(scannerFactory).stable(context, SHORT_SIGNAL, LONG_SIGNAL);
-        verify(nextScanner, times(2)).map(any(), any());
+        verify(nextScanner, times(2)).accept(any(), any());
         verify(nextScanner).complete(any());
         verify(context, never()).setDelegate(any());
     }

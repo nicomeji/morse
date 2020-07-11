@@ -27,7 +27,7 @@ class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
     private final StateValueScannerFactory scannerFactory;
 
     @Override
-    public void map(SignalState state, Consumer<SignalValue> next) {
+    public void accept(SignalState state, Consumer<SignalValue> next) {
         buffer.add(state);
         if (buffer.size() > MAX_SAMPLES_QTY) {
             context.setDelegate(process(next));
@@ -50,7 +50,7 @@ class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
         final Range<Integer> longSignal = clusters.get(1);
 
         final Scanner<SignalState, SignalValue> stable = scannerFactory.stable(context, shortSignal, longSignal);
-        buffer.forEach(s -> stable.map(s, next));
+        buffer.forEach(s -> stable.accept(s, next));
         return stable;
     }
 }

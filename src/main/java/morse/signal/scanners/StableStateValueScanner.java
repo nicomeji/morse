@@ -25,7 +25,7 @@ class StableStateValueScanner implements Scanner<SignalState, SignalValue> {
     private final StateValueScannerFactory scannerFactory;
 
     @Override
-    public void map(SignalState signalState, Consumer<SignalValue> next) {
+    public void accept(SignalState signalState, Consumer<SignalValue> next) {
         buffer(signalState);
         SignalValue value = requireNonNull(stateConverter.toSignalValue(signalState));
         if (!SignalValue.UNDEFINED.equals(value)) {
@@ -33,11 +33,6 @@ class StableStateValueScanner implements Scanner<SignalState, SignalValue> {
         } else {
             context.setDelegate(scannerFactory.unstable(context, queue));
         }
-    }
-
-    @Override
-    public void complete(Consumer<SignalValue> next) {
-        // Do nothing.
     }
 
     private void buffer(SignalState sample) {

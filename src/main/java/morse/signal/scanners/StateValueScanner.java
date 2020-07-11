@@ -14,8 +14,8 @@ class StateValueScanner implements Scanner<SignalState, SignalValue> {
     private Scanner<SignalState, SignalValue> delegate;
 
     @Override
-    public void map(SignalState element, Consumer<SignalValue> next) {
-        delegate.map(element, next);
+    public void accept(SignalState element, Consumer<SignalValue> next) {
+        delegate.accept(element, next);
     }
 
     @Override

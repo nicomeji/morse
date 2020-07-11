@@ -34,7 +34,7 @@ public class UndeterminedStateValueScannerTest {
     @Test
     public void scanHasNoEffect() {
         List<SignalValue> values = new LinkedList<>();
-        scanner.map(new SignalState(SignalState.State.UP, 6), values::add);
+        scanner.accept(new SignalState(SignalState.State.UP, 6), values::add);
 
         assertTrue(values.isEmpty());
         verify(context, never()).setDelegate(any());
@@ -43,8 +43,8 @@ public class UndeterminedStateValueScannerTest {
     @Test
     public void completeGivesAnUndefinedValue() {
         List<SignalValue> values = new LinkedList<>();
-        scanner.map(new SignalState(SignalState.State.UP, 6), values::add);
-        scanner.map(new SignalState(SignalState.State.DOWN, 6), values::add);
+        scanner.accept(new SignalState(SignalState.State.UP, 6), values::add);
+        scanner.accept(new SignalState(SignalState.State.DOWN, 6), values::add);
         assertTrue(values.isEmpty());
 
         scanner.complete(values::add);
@@ -63,7 +63,7 @@ public class UndeterminedStateValueScannerTest {
         when(scannerFactory.unstable(context, signal)).thenReturn(nextScanner);
 
         List<SignalValue> values = new LinkedList<>();
-        signal.forEach(s -> scanner.map(s, values::add));
+        signal.forEach(s -> scanner.accept(s, values::add));
 
         assertTrue(values.isEmpty());
         verify(scannerFactory).unstable(context, signal);

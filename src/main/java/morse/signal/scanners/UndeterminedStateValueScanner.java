@@ -24,7 +24,7 @@ class UndeterminedStateValueScanner implements Scanner<SignalState, SignalValue>
     private final StateValueScannerFactory scannerFactory;
 
     @Override
-    public void map(SignalState element, Consumer<SignalValue> next) {
+    public void accept(SignalState element, Consumer<SignalValue> next) {
         initialStates.add(element);
         if (initialStates.size() > MAX_SAMPLES_QTY) {
             context.setDelegate(scannerFactory.unstable(context, initialStates));

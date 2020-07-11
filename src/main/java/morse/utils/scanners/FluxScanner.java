@@ -5,6 +5,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -18,11 +19,11 @@ import java.util.function.Supplier;
  */
 @AllArgsConstructor
 public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
-    private final Supplier<Scanner<T, U>> mapperSupplier;
+    private final Supplier<Scanner<T, U>> scannerSupplier;
 
     @Override
     public Flux<U> apply(Flux<T> flux) {
-        final Scanner<T, U> mapper = mapperSupplier.get();
+        final Scanner<T, U> scanner = scannerSupplier.get();
 
         return flux.materialize()
                 .concatMap(signal -> Flux.create(sink -> signal.accept(new Subscriber<>() {
@@ -33,7 +34,7 @@ public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
 
                     @Override
                     public void onNext(T element) {
-                        mapper.map(element, sink::next);
+                        scanner.accept(element, sink::next);
                         sink.complete();
                     }
 
@@ -44,7 +45,7 @@ public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
 
                     @Override
                     public void onComplete() {
-                        mapper.complete(sink::next);
+                        scanner.complete(sink::next);
                         sink.complete();
                     }
                 })));
@@ -57,18 +58,16 @@ public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
      * process inputs in a deterministic way.
      *
      * While Scanner is buffering data it may not push any next mapped value.
-     * And as Flux size is undetermined during runtime, it may complete before StatefulMapper
+     * And as Flux size is undetermined during runtime, it may complete before FluxScanner
      * achieves any stable state. So:
      * - "map" is used for each onNext value of the Flux; may not puh any mapped data.
-     * - "complete" is used when Flux completes, so mapper can flush any remaining data.
+     * - "complete" is used when Flux completes, so scanner can flush any remaining data.
      *
      * @param <T> From type
      * @param <U> To type
      */
     @FunctionalInterface
-    public interface Scanner<T, U> {
-        void map(T element, Consumer<U> next);
-
+    public interface Scanner<T, U> extends BiConsumer<T, Consumer<U>> {
         default void complete(Consumer<U> next) {}
     }
 }
