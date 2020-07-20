@@ -2,7 +2,6 @@ Feature: Parse long phrase with spaces
 
 Background:
   * url 'http://localhost:8080/morse'
-  * def morseSignal = read('mocks/longSignal.json')
   * def readFile =
   """
   function(args) {
@@ -13,7 +12,14 @@ Background:
 
 Scenario:
   Given path '/decode'
-  And request morseSignal
+  And request read('mocks/longSignal.json')
   When method POST
   Then status 200
   And match response == readFile('src/it/java/morse/decode/mocks/longMessage.txt')
+
+Scenario:
+  Given path '/decode'
+  And request read('mocks/longSignal2.json')
+  When method POST
+  Then status 200
+  And match response == readFile('src/it/java/morse/decode/mocks/longMessage2.txt')

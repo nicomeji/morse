@@ -45,7 +45,7 @@ public class StateValueScannerTest {
         when(stateConverterFactory.create(SHORT_SIGNAL, LONG_SIGNAL)).thenReturn(stateConverter);
         when(stateConverter.toSignalValue(any())).thenReturn(SignalValue.DOT);
 
-        FluxScanner.Scanner<SignalState, SignalValue> scanner = scannerFactory.get();
+        FluxScanner.Scanner<SignalState, SignalValue> scanner = scannerFactory.create();
 
         int totalBuffer = UndeterminedStateValueScanner.MAX_SAMPLES_QTY + UnstableStateValueScanner.MAX_SAMPLES_QTY;
         final int samplesQuantity = totalBuffer * 10;

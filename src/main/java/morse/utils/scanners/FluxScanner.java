@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * This FluxScanner uses a Scanner which may keep track of previously processed values.
@@ -19,12 +18,10 @@ import java.util.function.Supplier;
  */
 @AllArgsConstructor
 public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
-    private final Supplier<Scanner<T, U>> scannerSupplier;
+    private final Scanner<T, U> scanner;
 
     @Override
     public Flux<U> apply(Flux<T> flux) {
-        final Scanner<T, U> scanner = scannerSupplier.get();
-
         return flux.materialize()
                 .concatMap(signal -> Flux.create(sink -> signal.accept(new Subscriber<>() {
                     @Override
@@ -60,7 +57,7 @@ public class FluxScanner<T, U> implements Function<Flux<T>, Flux<U>> {
      * While Scanner is buffering data it may not push any next mapped value.
      * And as Flux size is undetermined during runtime, it may complete before FluxScanner
      * achieves any stable state. So:
-     * - "map" is used for each onNext value of the Flux; may not puh any mapped data.
+     * - "accept" is used for each onNext value of the Flux; may not puh any mapped data.
      * - "complete" is used when Flux completes, so scanner can flush any remaining data.
      *
      * @param <T> From type

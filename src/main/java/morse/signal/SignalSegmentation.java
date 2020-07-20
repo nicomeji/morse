@@ -15,8 +15,8 @@ import static morse.models.SignalValue.*;
 
 @Component
 public class SignalSegmentation {
-    static final List<SignalValue> EOF = asList(DOT, LINE, DOT, LINE, DOT, LINE);
     public static final List<SignalValue> SEPARATOR = singletonList(WORD_SEPARATOR);
+    private static final List<SignalValue> EOF = asList(DOT, LINE, DOT, LINE, DOT, LINE);
 
     public Flux<List<SignalValue>> chunk(Flux<SignalValue> signal) {
         return signal.takeUntil(isEqual(SIGNAL_STOP))

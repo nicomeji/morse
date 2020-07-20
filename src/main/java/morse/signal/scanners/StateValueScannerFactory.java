@@ -1,6 +1,7 @@
 package morse.signal.scanners;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.clustering.JenksNaturalBreaksClustering;
@@ -11,22 +12,23 @@ import morse.utils.statistics.Range;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.function.Supplier;
 
+@Slf4j
 @Component
 @AllArgsConstructor
-public class StateValueScannerFactory implements Supplier<Scanner<SignalState, SignalValue>> {
+public class StateValueScannerFactory {
     private final JenksNaturalBreaksClustering clustering;
     private final StateConverterFactory stateConverterFactory;
 
-    @Override
-    public Scanner<SignalState, SignalValue> get() {
+    public Scanner<SignalState, SignalValue> create() {
+        log.info("CREATE UNDETERMINED");
         StateValueScanner stateValueScanner = new StateValueScanner();
         stateValueScanner.setDelegate(new UndeterminedStateValueScanner(stateValueScanner, this));
         return stateValueScanner;
     }
 
     UnstableStateValueScanner unstable(StateValueScanner context, List<SignalState> buffer) {
+        log.info("CREATE UNSTABLE");
         return new UnstableStateValueScanner(context, buffer, clustering, this);
     }
 
@@ -34,6 +36,7 @@ public class StateValueScannerFactory implements Supplier<Scanner<SignalState, S
             StateValueScanner context,
             Range<Integer> shortSignalRange,
             Range<Integer> longSignalRange) {
+        log.info("CREATE STABLE");
         final StateConverter stateConverter = stateConverterFactory.create(shortSignalRange, longSignalRange);
         return new StableStateValueScanner(context, stateConverter, this);
     }

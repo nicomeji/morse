@@ -25,7 +25,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SignalDecoderTest {
     @Mock
-    private FluxScanner<SignalState, SignalValue> mapper;
+    private FluxScanner<SignalState, SignalValue> fluxScanner;
+
+    @Mock
+    private FluxScannerFactory scannerFactory;
 
     @Mock
     private SignalSegmentation segmentation;
@@ -36,11 +39,12 @@ public class SignalDecoderTest {
     @Test
     public void decodingSignal() {
         final Flux<State> signal = Flux.just(UP, UP, DOWN, UP, UP, DOWN, DOWN, DOWN, UP, UP);
-        final Flux<SignalValue> values = Flux.just(SPACE, DOT, SPACE, DOT, SPACE);
+        final Flux<SignalValue> values = Flux.just(DOT, SPACE, DOT, SPACE);
         final List<SignalValue> morse = List.of(DOT, DOT);
         final Flux<List<SignalValue>> morseFlux = Flux.just(morse);
 
-        when(mapper.apply(any()))
+        when(scannerFactory.create()).thenReturn(fluxScanner);
+        when(fluxScanner.apply(any()))
                 .thenAnswer(invocation -> {
                     StepVerifier.create(invocation.getArgument(0))
                             .expectSubscription()
@@ -54,7 +58,18 @@ public class SignalDecoderTest {
                     return values;
                 });
 
-        when(segmentation.chunk(values)).thenReturn(morseFlux);
+        when(segmentation.chunk(any()))
+                .thenAnswer(invocation -> {
+                    StepVerifier.create(invocation.getArgument(0))
+                            .expectSubscription()
+                            .expectNext(DOT)
+                            .expectNext(SPACE)
+                            .expectNext(DOT)
+                            .expectNext(SPACE)
+                            .expectComplete()
+                            .verify(Duration.ofMillis(100));
+                    return morseFlux;
+                });
 
         StepVerifier.create(processor.decodeBits2Morse(signal))
                 .expectSubscription()
@@ -66,11 +81,12 @@ public class SignalDecoderTest {
     @Test
     public void ignoringFirstDown() {
         final Flux<State> signal = Flux.just(DOWN, DOWN, DOWN, UP, UP, DOWN, UP, UP, DOWN);
-        final Flux<SignalValue> values = Flux.just(SPACE, DOT, SPACE, DOT, SPACE);
+        final Flux<SignalValue> values = Flux.just(DOT, SPACE, DOT, SPACE);
         final List<SignalValue> morse = List.of(DOT, DOT);
         final Flux<List<SignalValue>> morseFlux = Flux.just(morse);
 
-        when(mapper.apply(any()))
+        when(scannerFactory.create()).thenReturn(fluxScanner);
+        when(fluxScanner.apply(any()))
                 .thenAnswer(invocation -> {
                     StepVerifier.create(invocation.getArgument(0))
                             .expectSubscription()
@@ -83,7 +99,18 @@ public class SignalDecoderTest {
                     return values;
                 });
 
-        when(segmentation.chunk(values)).thenReturn(morseFlux);
+        when(segmentation.chunk(any()))
+                .thenAnswer(invocation -> {
+                    StepVerifier.create(invocation.getArgument(0))
+                            .expectSubscription()
+                            .expectNext(DOT)
+                            .expectNext(SPACE)
+                            .expectNext(DOT)
+                            .expectNext(SPACE)
+                            .expectComplete()
+                            .verify(Duration.ofMillis(100));
+                    return morseFlux;
+                });
 
         StepVerifier.create(processor.decodeBits2Morse(signal))
                 .expectSubscription()

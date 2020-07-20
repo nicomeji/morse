@@ -1,6 +1,7 @@
 package morse.signal.scanners;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import morse.models.SignalState;
 import morse.models.SignalValue;
 import morse.signal.clustering.JenksNaturalBreaksClustering;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  * <p>
  * Here I am using "Jenks Natural Breaks" algorithm.
  */
+@Slf4j
 @AllArgsConstructor
 class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
     static final int MAX_SAMPLES_QTY = 80;
@@ -36,6 +38,7 @@ class UnstableStateValueScanner implements Scanner<SignalState, SignalValue> {
 
     @Override
     public void complete(Consumer<SignalValue> next) {
+        log.info("COMPLETE ON UNSTABLE");
         process(next).complete(next);
     }
 
